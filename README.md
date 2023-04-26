@@ -16,7 +16,7 @@ This part seeks to determine what the business task wants to answer.
 - How can Cyclistic use digital media to influence casual riders to become members?
 
 # Prepare
-The cyclist trip data for January 2022 to December 2022 was used here. It can be found at [Site for data]((https://divvy-tripdata.s3.amazonaws.com/index.html) The data was then renamed to have the year together with the months (for instance 2022_01 which meant the 2022 data for January) and kept in a folder to make the data organized as much as possible.
+The cyclist trip data for January 2022 to December 2022 was used here. It can be found at [Site for data](https://divvy-tripdata.s3.amazonaws.com/index.html) The data was then renamed to have the year together with the months (for instance 2022_01 which meant the 2022 data for January) and kept in a folder to make the data organized as much as possible.
 
 
 # Process
