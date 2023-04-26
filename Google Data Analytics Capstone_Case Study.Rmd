@@ -1,0 +1,124 @@
+---
+title: "Google Data Analytics Capstone Case Study"
+author: "Frank Amo Agyei-Owusu"
+date: "4/25/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+
+## Loading Packages
+Here,the tidyverse, janitor and lubridate package were first installed and then loaded to aid in the data cleaning process
+
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(lubridate)
+```
+
+
+## Loading the Datasets
+Here, the data was from 12 csv files and then loaded
+
+```{r}
+Jan2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_01.csv")
+Feb2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_02.csv")
+Mar2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_03.csv")
+Apr2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_04.csv")
+May2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_05.csv")
+Jun2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_06.csv")
+Jul2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_07.csv")
+Aug2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_08.csv")
+Sep2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_09.csv")
+Oct2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_10.csv")
+Nov2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_11.csv")
+Dec2022<-read.csv("Google Data Analytics_ Case Study1\\divvy-tripdata\\2022_12.csv")
+
+```
+
+
+# Combining or Merging the datasets
+The datasets was for individual months so it was combined to one based on the rows to help us have an individual dataset
+
+```{r}
+combined_df<-bind_rows(Jan2022, Feb2022, Mar2022, Apr2022, May2022, Jun2022,
+                       Jul2022, Aug2022, Sep2022, Oct2022, Nov2022, Dec2022)
+```
+
+## Data Cleaning Process
+Here, we combined various data cleaning methods to help make the dataset as organized as possible for the data analysis
+
+# Cleaning the dataset to remove any spaces or parentheses
+
+```{r}
+combined_df<- clean_names(combined_df)
+```
+
+# Removing empty columns and rows in the dataframe
+
+```{r}
+remove_empty(combined_df, which = c())
+```
+
+
+## Adding newly columns specified in the Business Task
+Here, new columns would be added to the dataset as specified or demanded from the task given in the case study
+
+
+# day of the week
+We use the wday() function here-- it extracts the DAY from the OBJECT(usually SELECTED from a column in a dataframe) with the date format
+
+```{r}
+combined_df$day_of_week<-wday(combined_df$started_at, label = T, abbr = T) 
+```
+
+
+# start hour
+We use the POSIXct() function-- it extracts a certain TIME HOUR FORMAT from an OBJECT (which is usually formatted as a date/time format)
+
+```{r}
+combined_df$starting_hour<-format(as.POSIXct(combined_df$started_at), '%H')
+```
+
+
+# Month
+The as.Date() function was deployed to extract the DATE from the OBJECT (usually from a column in a dataframe) with the date format. Used in format()
+
+
+```{r}
+combined_df$month< format(as.Date(combined_df$started_at), '%m')
+```
+
+
+# Trip Duration
+The difftime() function was deployed to calculate the time difference between column and another within a dataframe with a date format
+
+```{r}
+combined_df$trip_duration<- difftime(combined_df$ended_at, combined_df$started_at, units = 'sec')
+```
+
+
+
+# Cleaning the data again to remove the errors in the new columns added
+The data is then cleaned again to remove any negative trip_durations
+
+```{r}
+cleaned_df<-combined_df[!(combined_df$trip_duration <=0),]
+```
+
+
+# Saving the data as a csv file 
+The data was saved as a csv to aid in data visualization
+
+```{r}
+write.csv(cleaned_df, file = "Cyclist_trip_data.csv")
+```
+
+
+
+
+
